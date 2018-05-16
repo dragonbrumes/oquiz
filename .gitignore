@@ -1,6 +1,12 @@
 # Bundler
 vendor/
 
+# Conf
+app/config.conf
+
+# Composer
+composer.lock
+
 # NPM packages folder
 node_modules/
 
