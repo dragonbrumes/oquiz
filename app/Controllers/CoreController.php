@@ -1,17 +1,19 @@
 <?php
 namespace Oquiz\Controllers;
-//use MealOclock\Utils\User;
 
+//use Oquiz\Utils\User;
+
+//class abstraite de définition pour d'autres class
 abstract class CoreController {
-    // Je stocke le moteur de template dans une propriété de la classe pour que ce soit accessible à toutes ses méthodes
+    // stockage du moteur de template Plates dans une propriété de la classe pour le rendre accessible à toutes ses méthodes
     protected $templates;
 
-    // Je stocke l'objet AltoRouter dans une propriété de la classe pour que ce soit accessible à toutes ses méthodes (ettous ses enfants)
+    // stockage de l'objet AltoRouter dans une propriété de la classe pour que ce soit accessible à toutes ses méthodes (et tous ses enfants extends)
     protected $router;
 
     // $app = Application passé en paramètre lors du "dispatch"
     public function __construct($app) {
-        // Je crée une instance du moteur de Templates
+        // instanciation du moteur de Templates
         $this->templates = new \League\Plates\Engine(__DIR__.'/../Views');
 
         // Je récupère le router qui est dans $app

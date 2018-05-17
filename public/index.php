@@ -5,11 +5,12 @@
 require(__DIR__.'/../vendor/autoload.php');
 // J'active le système de session de PHP
 // Après l'autoload ABSOLUMENT car on a un objet UserModel en SESSION
-//session_start();
+session_start();
 // Je peux importer ma classe Application
 use Oquiz\Application;
+
 // J'instancie ma classe Application
 $app = new Application();
-//$app->test();
+
 // J'appelle la méthode "run"
 $app->run();

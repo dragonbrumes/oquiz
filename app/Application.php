@@ -2,9 +2,12 @@
 
 // namespace de la classe
 namespace Oquiz;
+
 // Importe AltoRouter d'un autre namespace
 use \AltoRouter;
-class Application {
+
+class Application
+{
 
     // Je crée une propriété $router
     // pour pouvoir utiliser cette propriété dans toutes mes méthodes
@@ -14,7 +17,8 @@ class Application {
     // Ma propriété contenant les données du fichier de config
     private $config;
 
-    public function __construct() {
+    public function __construct()
+    {
         // Récupération de la configuration
         $this->config = parse_ini_file(__DIR__.'/config.conf');
         //dump($this->config);exit;
@@ -25,19 +29,16 @@ class Application {
 
         // Si on bosse sous localhost, on doit indiquer à AltoRouter le chemin complet (tout ce qui est après "localhost" dans la barre d'adresse)
         // Sans slash de début mais avec slash de fin
-        //$this->router->setBasePath($this->config['BASEPATH']);
-        $this->router->setBasePath('evalback/evaluation-back-oquiz-dragonbrumes/public/');
+        $this->router->setBasePath($this->config['BASEPATH']);
 
         // Je définis mes routes
         // (j'ai créé une méthode qui s'occupe de cela)
         $this->defineRoutes();
     }
 
-    public function test(){
-      echo "string";
-    }
 
-    public function defineRoutes() {
+    public function defineRoutes()
+    {
         // - GET = méthode HTTP GET (ou POST ou les 2)
         // - "/" => correspond à l'URL (barre d'adresse)
         // - 'MainController#home'
@@ -45,15 +46,16 @@ class Application {
         //  - '#' séparateur des 2 infos
         //  'home' méthode du controller qui va s'occuper de la page
         // - 'main_home' => le nom de cette route
-        $this->router->map('GET', '/', 'MainController#home', 'main_home');
-        $this->router->map('GET', '/quiz/[i:id]', 'QuizController#show', 'quiz_show');
-        $this->router->map('GET', '/signup', 'UserController#signup', 'user_signup');
-        $this->router->map('GET', '/signin', 'UserController#signin', 'user_signin');
+        $this->router->map('GET', '/', 'MainController#indexAction', 'main_indexaction');
+        $this->router->map('GET', '/quiz/[i:id]', 'QuizController#singleQuiz', 'quiz_singlequiz');
+        $this->router->map('GET', '/login', 'UserController#login', 'user_login');
+        $this->router->map('POST', '/login', 'UserController#loginPost', 'user_loginPost');
+        $this->router->map('GET', '/logout', 'UserController#logout', 'user_logout');
         $this->router->map('GET', '/compte', 'UserController#compte', 'user_compte');
         //dump($this->router);exit;
-
     }
-    public function run() {
+    public function run()
+    {
         // Je fais le match d'une route par rapport à l'URL courante
         $match = $this->router->match();
 
@@ -91,11 +93,11 @@ class Application {
             echo 'Dude, there is nothing here!<br>';
             exit;
         }
-
-      }
+    }
 
     // Getter plus précis pour la propriété config
-    public function getConfig($key) {
+    public function getConfig($key)
+    {
         // Si $key existe dans $this->config
         if (array_key_exists($key, $this->config)) {
             // Je ne retourne pas toute la propriété config
@@ -106,7 +108,8 @@ class Application {
     }
 
     // Getter simple
-    public function getRouter() {
+    public function getRouter()
+    {
         return $this->router;
     }
 }
