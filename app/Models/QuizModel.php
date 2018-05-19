@@ -2,14 +2,17 @@
 
 namespace Oquiz\Models;
 
-// J'importe les classes se trouvant dans un autre namespace
+// import des classes utiles se trouvant dans un autre namespace
 use Oquiz\Database;
 use PDO;
 
+/**
+ * Class de gestion des quiz
+ */
 // class QuizModel extends CoreModel {
 class QuizModel
 {
-    // Je crée une propriété pour chaque champ/colonne de la table
+    // propriétés pour chaque champ/colonne de la table
     private $id;
     private $title;
     private $description;
@@ -21,6 +24,7 @@ class QuizModel
     // constante de la table
     const TABLE_NAME = 'quizzes';
 
+    //retourne tout les quiz
     public static function findAll()
     {
         $sql = "
@@ -28,35 +32,37 @@ class QuizModel
       FROM ".self::TABLE_NAME."
     ";
     // LEFT JOIN users ON ".self::TABLE_NAME.".id_author = users.id
-        // Utilisation de notre classe Database pour se connecter à la database
+
+        //classe Database pour se connecter à la database
         $pdo = Database::getPDO();
 
-        // exécution de la requête
+        //exécution de la requête
         $pdoStatement = $pdo->query($sql);
 
-        // Je veux récupérer tous les résultats sous forme de tableau d'objet CommunityModel
-        // on doit préciser le FQCN de la classe
+        //récupère les résultats
         $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
 
-        // On retourne les résultats
+        //retourne les résultats
         return $results;
     }
 
+    //Trouve un unique quiz selon l'id passé en param
     public static function find($id)
     {
         $sql = '
           SELECT *
           FROM '.self::TABLE_NAME.'
           WHERE id = :id';
-        // Je prépare ma requête
+        // prépare la requête
         $pdoStatement = Database::getPDO()->prepare($sql);
 
-        // Je "bind" les données/token/jeton de ma requête
+        // "bind" les données/token/jeton de la requête
         $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
 
-        // J'exécute ma requête
+        // exécute la requête
         $pdoStatement->execute();
 
+        // récupère l'unique résultat
         $result = $pdoStatement->fetchObject(self::class);
 
         return $result;

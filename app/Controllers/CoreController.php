@@ -1,7 +1,7 @@
 <?php
 namespace Oquiz\Controllers;
 
-//use Oquiz\Utils\User;
+use Oquiz\Utils\User;
 
 //class abstraite de définition pour d'autres class
 abstract class CoreController {
@@ -24,17 +24,11 @@ abstract class CoreController {
             'title' => 'Oquiz', // => $title
             'basePath' => $app->getConfig('BASEPATH').'/', // => $basePath
             'router' => $this->router, // => $router
-            //'connectedUser' => User::getUser() // $connectedUser
+            'connectedUser' => User::getUser() // $connectedUser
         ]);
     }
 
-    // Méthode permettant d'afficher le code HTML en passant par le système de views
-    public function render() {
-        // TODO
-    }
-
     // Méthode permettant d'afficher un résultat sous forme de JSON
-    // (utile quand la page est appelée via Ajax)
     public static function sendJSON($data) {
         header('Content-Type: application/json');
         echo json_encode($data, JSON_PRETTY_PRINT);

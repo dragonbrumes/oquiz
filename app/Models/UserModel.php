@@ -10,23 +10,23 @@ class UserModel  {
     /**
      * @var int
      */
-    protected $id;
+    private $id;
     /**
      * @var string
      */
-    protected $first_name;
+    private $first_name;
     /**
      * @var string
      */
-    protected $last_name;
+    private $last_name;
     /**
      * @var string
      */
-    protected $email;
+    private $email;
     /**
      * @var string
      */
-    protected $password;
+    private $password;
     /**
      * @var string
      */
@@ -60,12 +60,21 @@ class UserModel  {
     }
 
     /**
+    * Get the value of user id
+     *
+     * @return string
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
     * Get the value of user First Name
      *
      * @return string
      */
     public function getFirstName() {
-        return $this->$first_name;
+        return $this->first_name;
     }
 
     /**
@@ -85,7 +94,7 @@ class UserModel  {
      * @return string
      */
     public function getLastName() {
-        return $this->$last_name;
+        return $this->last_name;
     }
 
     /**

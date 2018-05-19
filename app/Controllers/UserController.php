@@ -51,8 +51,9 @@ class UserController extends CoreController
                     // $_SESSION['user'] = $userModel;
                     User::setUser($userModel);
                     //print_r($_SESSION['user']);
-                    header('Location: '.$this->router->generate('main_indexaction').' ');
-                    exit;
+                    //dump($_SESSION['user']);
+                    //header('Location: '.$this->router->generate('main_indexaction').' ');
+                    //exit;
                     // On affiche un JSON disant que tout est ok
                     $this->sendJSON([
                         'code' => 1,
@@ -74,4 +75,20 @@ class UserController extends CoreController
             'errorList' => $errorList
         ]);
     }
+
+    public function logout() {
+        // doit être connecté pour se déconnecter
+        if (User::isConnected()) {
+            //  appel la méthode de la librairie User, permettant de déconnecter
+            User::logout();
+
+            // redirige vers la home
+            $this->redirectToRoute('main_indexaction');
+        }
+        else {
+            // Utilisateur non connecté => redirection vers la page de connexion
+            $this->redirectToRoute('user_login');
+        }
+    }
+
 }

@@ -1,19 +1,31 @@
 <div class="container">
-	<div class="nav">
-		<div class="logo">
-			O'Quiz
+	<div class="navbar navbar-light bg-light justify-content-end">
+		<div class="logo mr-auto">
+			<a class="navbar-brand" href="<?= $router->generate('main_indexaction'); ?>">O'Quiz</a>
 		</div>
 		<div class="menu_hello">
-			Bonjour XX
+            <?php if ($connectedUser) : ?>
+			Bonjour <?= $connectedUser->getFirstName(); ?>
+            <?php endif; ?>
 		</div>
 		<div class="menu_accueil">
-			Accueil
+			<a class="nav-link" href="<?= $router->generate('main_indexaction'); ?>"><i class="fas fa-home"></i>&nbsp;Accueil</a>
 		</div>
-		<div class="menu_moncompte">
-			Mon compte
+		<div class="menu_moncompte pr-1">
+            <?php if ($connectedUser !== false) : ?>
+            <a href="<?= $router->generate('user_compte'); ?>">
+            <i class="fas fa-user"></i>&nbsp;Mon compte</a>
+            <?php else : ?>
+			<a href="<?= $router->generate('user_signin'); ?>"><i class="fas fa-edit"></i>&nbsp;Inscription</a>
+            <?php endif; ?>
 		</div>
 		<div class="menu_log">
-			<a href="<?= $router->generate('user_login') ?>">Login</a>
+            <?php if ($connectedUser !== false) : ?>
+			<a href="<?= $router->generate('user_logout'); ?>"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+            <?php else : ?>
+            <a href="<?= $router->generate('user_login'); ?>">
+            <i class="fas fa-sign-in-alt"></i>&nbsp;Login</a>
+            <?php endif; ?>
 		</div>
 	</div>
 </div>
