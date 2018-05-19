@@ -7,6 +7,9 @@ var app = {
     $('#formLogin').on('submit', app.submitFormLogin);
     // J'intercepte l'event "submit" du formulaire de quiz
     $('#quizForm').on('submit', app.quizForm);
+    $('#submitQuiz').on('click', '#restart' ,function() {
+      window.location = document.URL;
+    });
 
   },
 
@@ -15,6 +18,7 @@ var app = {
     evt.preventDefault();
     //prépare pour l'envoi Ajax
     var formData = $(this).serialize();
+
     //envoi en Ajax
     $.ajax({
       url: BASE_PATH+'quizform', // URL appelée par Ajax
@@ -25,8 +29,9 @@ var app = {
 
       //https://api.jquery.com/attribute-starts-with-selector/
       //remet à zero les affichages précédents
-      $('input[value^="quiz"]').next().removeClass('alert-success').removeClass('alert-warning');
+      $('input[value^="question"]').next().removeClass('alert-success').removeClass('alert-warning');
       $('div[id^=more-]').addClass('d-none');
+      $('#submit').removeClass('d-none');
       //parcours le 1er tab de retour
       $.each(response,function(index, questions){
         //parcours le second tab
@@ -34,18 +39,27 @@ var app = {
 
           //si question est vrai ou fausse l'affichage est modifié
           if (currentQuestion == true){
-            $('input[value="quiz-'+currentIndex+'"]').next().removeClass('bg-light').addClass('alert-success');
+            $('input[value="question-'+currentIndex+'"]').next().removeClass('bg-light').addClass('alert-success');
             $('#more-'+currentIndex+'').removeClass('d-none'); // bonus wiki
           } else if (currentQuestion == false) {
-            $('input[value="quiz-'+currentIndex+'"]').next().removeClass('bg-light').addClass('alert-warning');
+            $('input[value="question-'+currentIndex+'"]').next().removeClass('bg-light').addClass('alert-warning');
           }
-          let success = $( '.bg-light','#quizForm' ).length;
-          let fail = $( '.alert-warning' ).length;
-          // let none = $( '.alert-warning' ).length;
+          $('#submit').addClass('d-none');
+          $('#submitQuiz').html('<button id="restart" name="button" class="w-100 btn btn-success">Rejouer</button>');
+          // console.log($('div[data-id^=quiz-]'));
+          //console.log(document.URL);
+          // comptage des background contenus dans l'id formulaire
+          let noanwser = $( '.bg-light','#quizForm' ).length;
+          let success = $( '.alert-success','#quizForm' ).length;
+          let fail = $( '.alert-warning','#quizForm' ).length;
+          let hidden = $( 'input[type=hidden]','#quizForm' ).length; // pour compter nbr de questions
+          $('#result').html('Votre score :'+success+'/'+hidden).addClass('alert-success');
 
-          console.log(success);
-          console.log(fail);
-          if(success == 0 && fail < 1){
+          //console.log(success);
+          // console.log(fail);
+          // si il n'y a plus de bkg gris et plus de jaune, c'est que tous sont vert, donc gagné.
+          if(noanwser == 0 && fail < 1){
+
             console.log('win');
           }
 
@@ -54,6 +68,12 @@ var app = {
     })//done
 
   }, // end quizForm
+
+
+
+
+
+
 
   submitFormLogin: function(evt) {
     // Ne pas oublier d'annuler le fonctionnement par défaut

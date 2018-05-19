@@ -2,10 +2,11 @@
 <div class="container p-0">
 
 <div class="row">
-    <div class="col">id :<?= $quiz->getId() ?></div>
+    <div class="col" quiz-id="<?= $quiz->getId() ?>">id :<?= $quiz->getId() ?></div>
     <div class="col-12"><h1><?= $quiz->getTitle() ?></h1></div>
     <div class="col-12"><strong><?= $quiz->getDescription() ?></strong></div>
     <div class="col">by: <?= $quiz->getIdAuthor() ?></div>
+    <div id="result" class="col-12 rounded mb-1"></div>
 </div>
 
 <div class="wrapper">
@@ -14,8 +15,8 @@
     <form id="quizForm" class="row custom-control custom-radio d-inline-flex flex-row justify-content-start m-0 p-0" action="" method="post">
     <!-- création des cartouches de questions -->
     <?php foreach ($questionsList as $key => $currentQuestion): ?>
-    <div class="border col-md-3 p-0 ml-4 mb-4">
-        <input type="hidden" value="quiz-<?= $currentQuestion['id'] ?>">
+    <div class="question-box border p-0 ml-2 mr-0 mb-4">
+        <input type="hidden" value="question-<?= $currentQuestion['id'] ?>">
         <div class="bg-light border-bottom p-1 pb-2">
             id: <?= $currentQuestion['id'] ?>
             <h5><?= $currentQuestion['question'] ?></h5>
@@ -45,8 +46,8 @@
         </div>
     </div>
     <?php endforeach; ?>
-    <div class="w-100">
-        <button type="submit" name="button" class="w-100 btn btn-primary">Envoyer</button>
+    <div id="submitQuiz" class="w-100">
+        <button id="submit" type="submit" name="button" class="w-100 btn btn-primary rounded">Envoyer</button>
     </div>
 </form>
 <!-- </div> -->

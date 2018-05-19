@@ -95,7 +95,7 @@ class Application
             // On envoie l'entete HTTP disant "Page not found"
             header("HTTP/1.0 404 Not Found");
             // On peut même afficher un truc !
-            echo 'Dude, there is nothing here!<br>';
+            echo '404 Dude, there is nothing here!<br>';
             exit;
         }
     }

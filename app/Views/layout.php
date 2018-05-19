@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/brands.css">
     <link rel="stylesheet" href="<?= $basePath ?>assets/css/custom-bootstrap.css">
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/style.css">
 
     <script>
     var BASE_PATH = "<?= $basePath ?>";
