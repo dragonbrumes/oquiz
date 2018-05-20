@@ -15,16 +15,19 @@ class QuestionController extends CoreController
         $id = (int) $allParams['id'];
         // va chercher l'id du quiz
         $quiz = QuizModel::find($id);
+        $quizId = $quiz->getId();
         // va chercher TOUT les éléments liées au quiz
-        $questions = QuestionModel::questionsExtra($quiz->getId());
-        // va chercher tout SAUF les questions
-        // $questions = QuestionModel::questionsExtra($quiz->getId());
-        //$shuffle = $questions->shuffle($quiz->getId());
+        $quizQuestions = QuestionModel::quizInfos($quizId);
+        // $questions = new QuestionModel();
+        // $quizQuestions = $questions->quizInfos($quizId);
+        // $questions = QuestionModel::quizInfos($quiz->getId());
+        // dump($quizQuestions);
+        // exit;
 
         // envoi les infos a la view
         echo $this->templates->render('quiz/quiz', [
         'quiz' => $quiz, // $quizList
-        'questionsList' => $questions, // $questionsList
+        'quizQuestions' => $quizQuestions, // $questionsList
         //'questionsExtra' => $questionsExtra, // $questionsExtra
     ]);
     }

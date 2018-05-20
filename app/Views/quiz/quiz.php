@@ -8,51 +8,42 @@
     <div class="col">by: <?= $quiz->getIdAuthor() ?></div>
     <div id="result" class="col-12 rounded mb-1"></div>
 </div>
-
+<?php $incr = 0; ?>
 <div class="wrapper">
-
-<!-- <div class="row d-flex flex-row  justify-content-start m-0 p-0"> -->
     <form id="quizForm" class="row custom-control custom-radio d-inline-flex flex-row justify-content-start m-0 p-0" action="" method="post">
-    <!-- création des cartouches de questions -->
-    <?php foreach ($questionsList as $key => $currentQuestion): ?>
-    <div class="question-box border p-0 ml-2 mr-0 mb-4">
-        <input type="hidden" value="question-<?= $currentQuestion['id'] ?>">
-        <div class="bg-light border-bottom p-1 pb-2">
-            id: <?= $currentQuestion['id'] ?>
-            <h5><?= $currentQuestion['question'] ?></h5>
+        <?php foreach ($quizQuestions as $key => $currentQuestionList): ?>
+        <div class="question-box border p-0 ml-2 mr-0 mb-4">
+            <input type="hidden" value="question-<?= $currentQuestionList['id'] ;?>">
+            <div class="bg-light border-bottom p-1 pb-2">
+            id: <?= $currentQuestionList['id'] ?>
+            level : <?= $currentQuestionList['id_level'];?>
+            <h5><?= $currentQuestionList['question'] ?></h5>
         </div>
         <div class="">
-            <ul id="">
-                <li class="deco-none"><input class="custom-control-input" type="radio" name="<?= $currentQuestion['id'] ?>" id="<?= $currentQuestion['id'] ?>-1" value="1">
-                <label class="custom-control-label" for="<?= $currentQuestion['id'] ?>-1"><?= $currentQuestion['prop1'] ?></label></li>
-
-                <li class="deco-none"><input class="custom-control-input" type="radio" name="<?= $currentQuestion['id'] ?>" id="<?= $currentQuestion['id'] ?>-2" value="2">
-                <label class="custom-control-label" for="<?= $currentQuestion['id'] ?>-2"><?= $currentQuestion['prop2'] ?></label></li>
-
-                <li class="deco-none"><input class="custom-control-input" type="radio" name="<?= $currentQuestion['id'] ?>" id="<?= $currentQuestion['id'] ?>-3" value="3">
-                <label class="custom-control-label" for="<?= $currentQuestion['id'] ?>-3"><?= $currentQuestion['prop3'] ?></label></li>
-
-                <li class="deco-none"><input class="custom-control-input" type="radio" name="<?= $currentQuestion['id'] ?>" id="<?= $currentQuestion['id'] ?>-4" value="4">
-                <label class="custom-control-label" for="<?= $currentQuestion['id'] ?>-4"><?= $currentQuestion['prop4'] ?></label></li>
+            <ul>
+            <?php foreach ($currentQuestionList['0'] as $currentResponses): ?>
+                <?php foreach ($currentResponses as $key => $currentResponse): ?>
+                <?php $incr++; ?>
+                <li class="deco-none"><input class="custom-control-input" id="<?= $currentQuestionList['id']."-".$incr ?>" type="radio" name="<?= $currentQuestionList['id'] ?>"  value="<?= $key ?>">
+                <label class="custom-control-label" for="<?= $currentQuestionList['id']."-".$incr ?>"><?= $currentResponse ?></label>
+                </li>
+                <?php endforeach ?>
+            <?php endforeach ?>
             </ul>
         </div>
-        <div id="more-<?= $currentQuestion['id'] ?>" data-quiz="<?= $currentQuestion['id'] ?>" class="more-info alert-secondary d-none p-2">
+        <div id="more-<?= $currentQuestionList['id'] ?>" data-quiz="<?= $currentQuestionList['id'] ?>" class="more-info alert-secondary d-none p-2">
             <div class="anecdote">
-                <?= $currentQuestion['anecdote'] ?>
+                <?= $currentQuestionList['anecdote'] ?>
             </div>
             <div class="wiki">
-                <a href="#"><?= $currentQuestion['wiki'] ?></a>
+                <a href="#"><?= $currentQuestionList['wiki'] ?></a>
             </div>
         </div>
-    </div>
-    <?php endforeach; ?>
+        </div>
+    <?php endforeach ?>
     <div id="submitQuiz" class="w-100">
         <button id="submit" type="submit" name="button" class="w-100 btn btn-primary rounded">Envoyer</button>
     </div>
 </form>
-<!-- </div> -->
-
 </div>
-
-<!-- container -->
 </div>

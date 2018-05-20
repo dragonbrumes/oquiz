@@ -27,12 +27,12 @@ class QuestionModel
     // constante de la table
     const TABLE_NAME = 'questions';
 
-    //récupére QUE les questions selon l'ID d'un QUIZ passé en param
-    public static function questions ($id){
+    //récupére QUE les réponses selon l'ID d'une question passé en param
+    private static function responses ($id){
         $sql = "
             SELECT prop1,prop2,prop3,prop4
             FROM ".self::TABLE_NAME."
-            WHERE id_quiz = :id";
+            WHERE id = :id";
         // prépare la requête
         $pdoStatement = Database::getPDO()->prepare($sql);
 
@@ -43,92 +43,102 @@ class QuestionModel
         $pdoStatement->execute();
 
         // récupère les résultats;
-        // $results = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-        // ne renvoi qu'un résultat à la fois pour l'insérer dans chaque quiz de la méthode 'questionsExtra'
+        //$results = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
+        //
+        // ne renvoi qu'un résultat à la fois pour l'insérer dans le quiz courrant de la méthode 'quizInfos'
         $results = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+        //$results = $pdoStatement->fetch();
         //dump($results);
         //$disorder = self::disorder($results);
+        //******* TEST ****************/
+        //$newResults = array();
+        $questionsShuffled = array();
+        foreach ($results as $key => $currentQuestion){
+            $questionsShuffled[] = array($key => $currentQuestion);
 
-        return $results;
+        }
+        shuffle($questionsShuffled);
+        //$newResults[] = $questionsShuffled;
+        // dump($questionsShuffled);exit;
+        return $questionsShuffled;
+        //return $newResults;
+        //****************************************/
+        //return $results;
     }
 
-    //récupére toutes info SANS les questions dans un 1tps selon l'id du quiz passé en param
+    //récupére les info SANS les questions dans un 1er tps, selon l'id du quiz passé en param
     // puis récupère les questions avec la méthode => 'questions'
-    public static function questionsExtra ($id){
+    public static function quizInfos ($id_quiz){
         $sql = "
-            SELECT id, id_level, anecdote, wiki
+            SELECT id,id_quiz, question, id_level, anecdote, wiki
             FROM ".self::TABLE_NAME."
-            WHERE id_quiz = :id";
+            WHERE id_quiz = :id_quiz";
         // prépare la requête
         $pdoStatement = Database::getPDO()->prepare($sql);
 
         // "bind" les données/token/jeton de la requête
-        $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':id_quiz', $id_quiz, PDO::PARAM_INT);
 
         // exécute la requête
         $pdoStatement->execute();
 
-        // récupère les résultats
+        // récupère les résultats sous forme de tableau
         // $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
         $results = $pdoStatement->fetchAll(PDO::FETCH_ASSOC);
-        //dump($results);
-        //$disorder = self::disorder($results);
         $newResults = array();
-        $questionsShuffled = array();
+        // dump($results[0]['id']);
+        // dump($results);exit;
+
+        // // tableau pour accueillir les questions
+        // $questionsShuffled = array();
+
+        //boucle sur le quiz sélectionné
         foreach ($results as $key => $currentQuestionModel) {
-            //$questions = self::questions($id);
-            //dump($questions);
+            // tableau pour accueillir les questions mélangées (vidé à chaque boucle)
+            //$questionsShuffled = array();
+         //dump($currentQuestionModel);
+         //exit;
 
-            // $questionsShuffled[] = $currentQuestionModel[prop1];
-            // $questionsShuffled[] = $currentQuestionModel[prop2];
-            // $questionsShuffled[] = $currentQuestionModel[prop3];
-            // $questionsShuffled[] = $currentQuestionModel[prop4];
+          // va chercher les réponses à la question par son id
+          $currentQuestionResponses = self::responses($results[$key]['id']);
+          /************************ TEST ***************************/
+          $currentQuestionModel[] = $currentQuestionResponses;
+          $newResults[] = $currentQuestionModel;
+          //$results[] = $currentQuestionModel;
+          //dump($newResults);exit;
 
-            ///dump($questionsShuffled);
-            //shuffle($questionsShuffled);
-            //dump($questionsShuffled);
-            //http://php.net/manual/fr/function.shuffle.php#94697
-            //https://stackoverflow.com/questions/4102777/php-random-shuffle-array-maintaining-key-value
-            $shuffleQuestions = self::questions($id);
-            dump($shuffleQuestions);
-            shuffle($shuffleQuestions);
-            exit;
-            $currentQuestionModel[] = $shuffleQuestions;
-            dump($currentQuestionModel);
-            exit;
-
-            $newResults[] = $results;
-            dump($newResults);
-
-            exit;
-            $questionsShuffled[] = $temp;
+          /*******************************************************/
+          //dump($results[$key]['id']);
+          //dump($quizQuestions);
+          //exit;
+          //*********** ORIGIN ************************************/
+          // // transforme les questions du quiz en tableau indexé pour faciliter le mélange
+          //   foreach ($currentQuestionResponses as $key => $value){
+          //     $questionsShuffled[] = array($key => $value);
+          //   }
+          //   //dump($questionsShuffled);
+          //   //exit;
+          //   // mélange les questions en gardant les index associatifs
+          //   shuffle($questionsShuffled);
+          //   //dump($questionsShuffled);
+          //   //exit;
+          //
+          //   // insère les questions mélangées avec le résultat de la recherche du quiz
+          //   $currentQuestionModel[] = $questionsShuffled;
+          //   $newResults[] = $currentQuestionModel;
+          //   //$results[] = $currentQuestionModel;
+          //   //dump($currentQuestionModel);
+            /*******************************************************/
         }
-        return $results;
+        //dump($results); exit;
+        return $newResults;
     }
 
-    public function shuffle($id)
+    public function shuffle($quizQuestions)
     {
-        $sql = "
-            SELECT prop1, prop2, prop3, prop4
-            FROM ".self::TABLE_NAME."
-            WHERE id_quiz = :id";
-        // prépare la requête
-        $pdoStatement = Database::getPDO()->prepare($sql);
-
-        // "bind" les données/token/jeton de la requête
-        $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
-
-        // exécute la requête
-        $pdoStatement->execute();
-
-        // récupère les résultats
-        // $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        $results = $pdoStatement->fetch(PDO::FETCH_ASSOC);
-        //dump($results);
-        //$disorder = self::disorder($results);
 
 
-        return $results;
+
     }
 
     public static function disorder($data)

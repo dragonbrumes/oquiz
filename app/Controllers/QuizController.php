@@ -26,8 +26,8 @@ class QuizController extends CoreController
         $data = $_POST;
         $return = array();
         foreach ($data as $key => $value) {
-            $res = (int)$data[$key];
-            if ($res == 1){
+            /*   test    */
+            if ($value == prop1){
                 //$return[$key]= $res;
                 $code = true;
                 $return[$key]= $code;
@@ -36,6 +36,19 @@ class QuizController extends CoreController
                 $return[$key]= $code;
                 // $return[$key]= $res;
             }
+
+
+            /** origine ***/
+            //$res = (int)$data[$key];
+            // if ($res == 1){
+            //     //$return[$key]= $res;
+            //     $code = true;
+            //     $return[$key]= $code;
+            // }else {
+            //     $code = false;
+            //     $return[$key]= $code;
+            //     // $return[$key]= $res;
+            // }
         }
 
         // $res = (int)$data[64];
