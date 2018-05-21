@@ -1,3 +1,21 @@
+body{
+  font-family: font-family: 'Roboto', sans-serif;
+}
 .question-box {
-  width: 30%;
+  width: 32.5%;
+}
+.level-1, .level-2, .level-3 {
+  /* position: absolute;
+  top: 4px;
+  right: 5px; */
+  line-height: normal;
+  width: 70px;
+  height: 15px;
+  font-size: 0.7em;
+}
+.nbrQuest{
+  line-height: normal;
+  width: 100px;
+  height: 17px;
+  font-size: 0.7em;
 }

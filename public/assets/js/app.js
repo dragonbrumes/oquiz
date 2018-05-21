@@ -2,14 +2,21 @@ var app = {
 
   init: function() {
     console.log('init');
-
-    // J'intercepte l'event "submit" du formulaire de login
+    var hidden = $( 'input[type=hidden]','#quizForm' ).length;//nbre de questions
+    //affiche le nbre de questions
+    $('.nbrQuest').text(hidden+' questions');    
+    // intercepte l'event "submit" du formulaire de login
     $('#formLogin').on('submit', app.submitFormLogin);
-    // J'intercepte l'event "submit" du formulaire de quiz
+    // intercepte l'event "submit" du formulaire de quiz
     $('#quizForm').on('submit', app.quizForm);
+    // intercepte le click sur "rejouer" et reload la page via sa propre url
     $('#submitQuiz').on('click', '#restart' ,function() {
       window.location = document.URL;
     });
+
+    $('.level-1').text('Débutant').addClass(' bg-success');
+    $('.level-2').text('Confirmé').addClass(' bg-warning');
+    $('.level-3').text('Expert').addClass(' bg-danger');
 
   },
 
@@ -40,7 +47,7 @@ var app = {
           //si question est vrai ou fausse l'affichage est modifié
           if (currentQuestion == true){
             $('input[value="question-'+currentIndex+'"]').next().removeClass('bg-light').addClass('alert-success');
-            $('#more-'+currentIndex+'').removeClass('d-none'); // bonus wiki
+            $('#more-'+currentIndex+'').removeClass('d-none'); // affichage bonus wiki
           } else if (currentQuestion == false) {
             $('input[value="question-'+currentIndex+'"]').next().removeClass('bg-light').addClass('alert-warning');
           }
@@ -53,10 +60,11 @@ var app = {
           let success = $( '.alert-success','#quizForm' ).length;
           let fail = $( '.alert-warning','#quizForm' ).length;
           let hidden = $( 'input[type=hidden]','#quizForm' ).length; // pour compter nbr de questions
-          $('#result').html('Votre score :'+success+'/'+hidden).addClass('alert-success');
 
-          //console.log(success);
-          // console.log(fail);
+          if (success == hidden){console.log('win');}
+          let win = 'You Win!';
+          $('#result').html('Votre score : '+success+'/'+hidden+'<br><a href="'+document.URL+'">Rejouer</a>').removeClass('alert-primary').addClass('alert-success');
+
           // si il n'y a plus de bkg gris et plus de jaune, c'est que tous sont vert, donc gagné.
           if(noanwser == 0 && fail < 1){
 
@@ -94,7 +102,7 @@ var app = {
       console.log(response);
       // Si tout est ok
       if (response.code == 1) {
-        alert('Connexion réussie');
+        //alert('Connexion réussie');
         // redirection vers l'url fournie
         location.href = response.url;
       }

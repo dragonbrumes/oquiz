@@ -22,15 +22,23 @@ class QuizModel
     private $last_name;
 
     // constante de la table
-    const TABLE_NAME = 'quizzes';
+    const TABLE_Q = 'quizzes';
+    const TABLE_U = 'users';
 
-    //retourne tout les quiz
+    // retourne tout les quiz
     public static function findAll()
     {
         $sql = "
-      SELECT *
-      FROM ".self::TABLE_NAME."
+        SELECT quizzes.id, quizzes.title, quizzes.description, quizzes.id_author, users.id AS uid, users.first_name, users.last_name
+        FROM ".self::TABLE_Q.", ".self::TABLE_U."
+        WHERE users.id = quizzes.id_author
     ";
+    //     $sql = "
+    //     SELECT quizzes.id AS id_quiz, quizzes.title, quizzes.description, quizzes.id_author, users.id, users.first_name, users.last_name
+    //     FROM ".self::TABLE_Q.", ".self::TABLE_U."
+    //     WHERE users.id = quizzes.id_author
+    // ";
+
     // LEFT JOIN users ON ".self::TABLE_NAME.".id_author = users.id
 
         //classe Database pour se connecter à la database
@@ -49,10 +57,12 @@ class QuizModel
     //Trouve un unique quiz selon l'id passé en param
     public static function find($id)
     {
-        $sql = '
-          SELECT *
-          FROM '.self::TABLE_NAME.'
-          WHERE id = :id';
+        $sql = "
+        SELECT quizzes.id, quizzes.title, quizzes.description, quizzes.id_author, users.id AS uid, users.first_name, users.last_name
+        FROM ".self::TABLE_Q.", ".self::TABLE_U."
+        WHERE users.id = quizzes.id_author
+        AND quizzes.id = :id
+    ";
         // prépare la requête
         $pdoStatement = Database::getPDO()->prepare($sql);
 
@@ -69,31 +79,7 @@ class QuizModel
     }
 
 
-    public static function findAllByUserId($userId)
-    {
-        $sql = '
-            SELECT '.self::TABLE_NAME.'.*
-            FROM user
-            INNER JOIN community_has_user ON community_has_user.user_id = user.id
-            INNER JOIN community ON community_has_user.community_id = community.id
-            WHERE user.id = :userId
-        ';
-        // Je prépare ma requête
-        $pdoStatement = Database::getPDO()->prepare($sql);
-
-        // Je fais mes "binds"
-        $pdoStatement->bindValue(':userId', $userId, PDO::PARAM_INT);
-
-        // Exécution de la requête
-        $pdoStatement->execute();
-
-        // Je récupère les résultats sous forme de tableau d'objets
-        $results = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        return $results;
-    }
-
-
-    // Getters
+    /***** Getters *****/
     public function getId()
     {
         return $this->id;
@@ -113,6 +99,10 @@ class QuizModel
     {
         return $this->id_author;
     }
+    public function getIdUser()
+    {
+        return $this->uid;
+    }
 
     public function getAuthorFirstName()
     {
@@ -124,18 +114,9 @@ class QuizModel
         return $this->last_name;
     }
 
-    // Setters
-    public function setId($id)
-    {
-        // test si la valeur à affecter à la propriété est une "string" ou non vide
-        if (is_string($id) && !empty($id)) {
-            $this->id = $id;
-        }
-    }
-
+    /**** SETTERS *****/
     public function setTitle($title)
     {
-        // test si la valeur à affecter à la propriété est une "string" ou non vide
         if (is_string($title) && !empty($title)) {
             $this->title = $title;
         }
@@ -151,6 +132,12 @@ class QuizModel
     {
         if (is_string($id_author) && !empty($id_author)) {
             $this->id_author = $id_author;
+        }
+    }
+    public function setIdUser($uid)
+    {
+        if (is_string($uid) && !empty($uid)) {
+            $this->uid = $uid;
         }
     }
 

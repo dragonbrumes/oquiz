@@ -47,8 +47,9 @@ class Application
         //  'home' méthode du controller qui va s'occuper de la page
         // - 'main_home' => le nom de cette route
         $this->router->map('GET', '/', 'MainController#indexAction', 'main_indexaction');
-        $this->router->map('GET', '/quiz', 'QuizController#singleQuiz', 'quiz_singlequiz');
-        $this->router->map('GET', '/quiz/[i:id]', 'QuestionController#questions', 'question_questions');
+        $this->router->map('GET', '/quiz', 'MainController#singleQuiz', 'main_singlequiz');
+        $this->router->map('GET', '/quiz/[i:id]', 'MainController#questions', 'main_questions');
+        $this->router->map('POST', '/quizform', 'MainController#quizform', 'main_quizform');
 
         $this->router->map('GET', '/login', 'UserController#login', 'user_login');
         $this->router->map('POST', '/login', 'UserController#loginPost', 'user_loginPost');
@@ -56,7 +57,22 @@ class Application
         $this->router->map('GET', '/logout', 'UserController#logout', 'user_logout');
         $this->router->map('GET', '/compte', 'UserController#compte', 'user_compte');
         $this->router->map('GET', '/signin', 'UserController#signin', 'user_signin');
-        $this->router->map('POST', '/quizform', 'QuizController#quizform', 'quiz_quizform');
+
+
+
+
+        //
+        // $this->router->map('GET', '/', 'MainController#indexAction', 'main_indexaction');
+        // $this->router->map('GET', '/quiz', 'QuizController#singleQuiz', 'quiz_singlequiz');
+        // $this->router->map('GET', '/quiz/[i:id]', 'QuestionController#questions', 'question_questions');
+        //
+        // $this->router->map('GET', '/login', 'UserController#login', 'user_login');
+        // $this->router->map('POST', '/login', 'UserController#loginPost', 'user_loginPost');
+        //
+        // $this->router->map('GET', '/logout', 'UserController#logout', 'user_logout');
+        // $this->router->map('GET', '/compte', 'UserController#compte', 'user_compte');
+        // $this->router->map('GET', '/signin', 'UserController#signin', 'user_signin');
+        // $this->router->map('POST', '/quizform', 'QuizController#quizform', 'quiz_quizform');
         //dump($this->router);exit;
     }
     public function run()

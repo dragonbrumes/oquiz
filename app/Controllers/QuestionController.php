@@ -18,11 +18,6 @@ class QuestionController extends CoreController
         $quizId = $quiz->getId();
         // va chercher TOUT les éléments liées au quiz
         $quizQuestions = QuestionModel::quizInfos($quizId);
-        // $questions = new QuestionModel();
-        // $quizQuestions = $questions->quizInfos($quizId);
-        // $questions = QuestionModel::quizInfos($quiz->getId());
-        // dump($quizQuestions);
-        // exit;
 
         // envoi les infos a la view
         echo $this->templates->render('quiz/quiz', [

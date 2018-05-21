@@ -1,7 +1,7 @@
 <div class="container">
 	<div class="navbar navbar-light bg-light justify-content-end">
 		<div class="logo mr-auto">
-			<a class="navbar-brand" href="<?= $router->generate('main_indexaction'); ?>">O'Quiz</a>
+			<strong><a class="navbar-brand text-primary" href="<?= $router->generate('main_indexaction'); ?>">O'Quiz</a></strong>
 		</div>
 		<div class="menu_hello">
             <?php if ($connectedUser) : ?>
@@ -11,12 +11,12 @@
 		<div class="menu_accueil">
 			<a class="nav-link" href="<?= $router->generate('main_indexaction'); ?>"><i class="fas fa-home"></i>&nbsp;Accueil</a>
 		</div>
-		<div class="menu_moncompte pr-1">
+		<div class="menu_moncompte mr-1 pr-1">
             <?php if ($connectedUser !== false) : ?>
-            <a href="<?= $router->generate('user_compte'); ?>">
+            <a href="#">
             <i class="fas fa-user"></i>&nbsp;Mon compte</a>
             <?php else : ?>
-			<a href="<?= $router->generate('user_signin'); ?>"><i class="fas fa-edit"></i>&nbsp;Inscription</a>
+			<a href="#"><i class="fas fa-edit"></i>&nbsp;Inscription</a>
             <?php endif; ?>
 		</div>
 		<div class="menu_log">
