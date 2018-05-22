@@ -1,6 +1,8 @@
 #personnal files
 app/Views/quiz/quizSave.php
 app/Views/quiz/quizSaveQuesArray.php
+app/Controllers/QuizController.php
+app/Controllers/QuestionController.php
 
 # Bundler
 vendor/
