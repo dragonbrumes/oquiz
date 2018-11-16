@@ -5,7 +5,7 @@ app/Controllers/QuizController.php
 app/Controllers/QuestionController.php
 
 # Bundler
-vendor/
+# vendor/
 
 # Conf
 app/config.conf
